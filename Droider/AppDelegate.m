@@ -39,9 +39,19 @@
                                                           action:@selector(menuItemClicked:)
                                                    keyEquivalent:@""];
             [item setTarget:self];
+            [item setSubmenu:[self getSubmenuForDeviceId:deviceName]];
             [statusMenu addItem:item];
         }
     }
+}
+
+- (NSMenu *)getSubmenuForDeviceId:(NSString *)deviceId
+{
+    NSMenu *submenu = [NSMenu alloc];
+    [submenu addItemWithTitle:@"Clear Data" action:nil keyEquivalent:@""];
+    [submenu addItemWithTitle:@"Reboot" action:nil keyEquivalent:@""];
+    [submenu addItemWithTitle:@"Take Screenshot" action:nil keyEquivalent:@""];
+    return submenu;
 }
 
 - (void)menuItemClicked:(NSMenuItem *)item
