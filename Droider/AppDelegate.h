@@ -12,8 +12,6 @@
     NSStatusItem * statusItem;
 }
 
-@property (assign) IBOutlet NSWindow *window;
-
 @property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
 
 @end
