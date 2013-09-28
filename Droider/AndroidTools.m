@@ -16,19 +16,7 @@
     NSString *devicesArg = @"devices";
     NSArray *args = [NSArray arrayWithObjects:devicesArg, nil];
     
-    NSTask *t = [[NSTask alloc] init];
-    NSPipe *outputPipe = [NSPipe pipe];
-    [t setStandardInput:[NSPipe pipe]];
-    [t setStandardOutput:outputPipe];
-    [t setStandardError:outputPipe];
-    [t setLaunchPath:path];
-    [t setArguments:args];
-    [t launch];
-    [t waitUntilExit];
-    
-    NSFileHandle *handle = [outputPipe fileHandleForReading];
-    NSData *taskOutput = [handle readDataToEndOfFile];
-    NSString *outputText = [[NSString alloc] initWithData:taskOutput encoding:NSUTF8StringEncoding];
+    NSString *outputText = [self getOutputFromShellCommand:path withArguments:args];
     
     NSArray *deviceList = [self removePreambleAndWhitespace:outputText];
     
@@ -38,6 +26,23 @@
     }
     
     return devices;
+}
+
++ (NSString *) getOutputFromShellCommand:(NSString *)commandPath withArguments:(NSArray *)args
+{
+    NSTask *t = [[NSTask alloc] init];
+    NSPipe *outputPipe = [NSPipe pipe];
+    [t setStandardInput:[NSPipe pipe]];
+    [t setStandardOutput:outputPipe];
+    [t setStandardError:outputPipe];
+    [t setLaunchPath:commandPath];
+    [t setArguments:args];
+    [t launch];
+    [t waitUntilExit];
+    
+    NSFileHandle *handle = [outputPipe fileHandleForReading];
+    NSData *taskOutput = [handle readDataToEndOfFile];
+    return [[NSString alloc] initWithData:taskOutput encoding:NSUTF8StringEncoding];
 }
 
 + (NSArray*) removePreambleAndWhitespace: (NSString*)adbOutput
