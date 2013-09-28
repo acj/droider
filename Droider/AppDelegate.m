@@ -7,12 +7,45 @@
 //
 
 #import "AppDelegate.h"
+#import "AndroidTools.h"
 
 @implementation AppDelegate
 
+@synthesize statusMenu;
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    [statusItem setMenu:statusMenu];
+    [statusItem setTitle:@"Devices"];
+    [statusItem setHighlightMode:YES];
+    
+    [self updateMenuItems:statusMenu withDevices:[AndroidTools getListOfConnectedDevices]];
+}
+
+- (void)updateMenuItems:(NSMenu *)menu
+            withDevices:(NSArray *)deviceList
+{
+    if ([deviceList count] == 0) {
+        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"No devices connected"
+                                                      action:@selector(menuItemClicked:)
+                                               keyEquivalent:@""];
+        [statusMenu addItem:item];
+    } else {
+        for (NSArray *device in deviceList)
+        {
+            NSString *deviceName = [device objectAtIndex:0];
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:deviceName
+                                                          action:@selector(menuItemClicked:)
+                                                   keyEquivalent:@""];
+            [item setTarget:self];
+            [statusMenu addItem:item];
+        }
+    }
+}
+
+- (void)menuItemClicked:(NSMenuItem *)item
+{
 }
 
 @end

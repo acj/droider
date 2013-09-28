@@ -17,6 +17,7 @@
 		649F59F617F3D9230094B6CC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 649F59D617F3D9220094B6CC /* Cocoa.framework */; };
 		649F59FE17F3D9230094B6CC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 649F59FC17F3D9230094B6CC /* InfoPlist.strings */; };
 		649F5A0117F3D9230094B6CC /* DroiderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 649F5A0017F3D9230094B6CC /* DroiderTests.m */; };
+		649F5A0C17F5008F0094B6CC /* AndroidTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 649F5A0B17F5008F0094B6CC /* AndroidTools.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,8 @@
 		649F59FD17F3D9230094B6CC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		649F59FF17F3D9230094B6CC /* DroiderTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DroiderTests.h; sourceTree = "<group>"; };
 		649F5A0017F3D9230094B6CC /* DroiderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DroiderTests.m; sourceTree = "<group>"; };
+		649F5A0A17F5008F0094B6CC /* AndroidTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AndroidTools.h; sourceTree = "<group>"; };
+		649F5A0B17F5008F0094B6CC /* AndroidTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AndroidTools.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +117,8 @@
 		649F59DC17F3D9220094B6CC /* Droider */ = {
 			isa = PBXGroup;
 			children = (
+				649F5A0A17F5008F0094B6CC /* AndroidTools.h */,
+				649F5A0B17F5008F0094B6CC /* AndroidTools.m */,
 				649F59E817F3D9220094B6CC /* AppDelegate.h */,
 				649F59E917F3D9230094B6CC /* AppDelegate.m */,
 				649F59EB17F3D9230094B6CC /* MainMenu.xib */,
@@ -263,6 +268,7 @@
 			files = (
 				649F59E317F3D9220094B6CC /* main.m in Sources */,
 				649F59EA17F3D9230094B6CC /* AppDelegate.m in Sources */,
+				649F5A0C17F5008F0094B6CC /* AndroidTools.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
