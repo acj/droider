@@ -45,7 +45,7 @@
     return [[NSString alloc] initWithData:taskOutput encoding:NSUTF8StringEncoding];
 }
 
-+ (NSArray*) removePreambleAndWhitespace: (NSString*)adbOutput
++ (NSArray*) removePreambleAndWhitespace:(NSString*)adbOutput
 {
     NSArray *lines = [adbOutput componentsSeparatedByString:@"\n"];
     

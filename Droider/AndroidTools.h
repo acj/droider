@@ -13,6 +13,6 @@
 
 + (NSArray*) getListOfConnectedDevices;
 
-+ (NSArray*) removePreambleAndWhitespace: (NSString*)adbOutput;
++ (NSArray*) removePreambleAndWhitespace:(NSString*)adbOutput;
 
 @end
