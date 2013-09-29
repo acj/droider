@@ -10,17 +10,6 @@
 
 @implementation AndroidTools
 
-+ (NSArray*) getListOfConnectedDevices
-{
-    NSString *path = @"/Users/acj/android-sdk-macosx/platform-tools/adb";
-    NSString *devicesArg = @"devices";
-    NSArray *args = [NSArray arrayWithObjects:devicesArg, nil];
-    
-    NSString *outputText = [self getOutputFromShellCommand:path withArguments:args];
-    
-    return [self getDeviceListFromAdb:outputText];
-}
-
 + (NSString *) getOutputFromShellCommand:(NSString *)commandPath withArguments:(NSArray *)args
 {
     NSTask *t = [[NSTask alloc] init];
@@ -36,6 +25,17 @@
     NSFileHandle *handle = [outputPipe fileHandleForReading];
     NSData *taskOutput = [handle readDataToEndOfFile];
     return [[NSString alloc] initWithData:taskOutput encoding:NSUTF8StringEncoding];
+}
+
++ (NSArray*) getListOfConnectedDevices
+{
+    NSString *path = @"/Users/acj/android-sdk-macosx/platform-tools/adb";
+    NSString *devicesArg = @"devices";
+    NSArray *args = [NSArray arrayWithObjects:devicesArg, nil];
+    
+    NSString *outputText = [self getOutputFromShellCommand:path withArguments:args];
+    
+    return [self getDeviceListFromAdb:outputText];
 }
 
 + (NSArray *) getDeviceListFromAdb:(NSString *)adbOutput
