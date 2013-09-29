@@ -34,12 +34,13 @@
     } else {
         for (NSArray *device in deviceList)
         {
-            NSString *deviceName = [device objectAtIndex:0];
-            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:deviceName
+            NSString *deviceId = [device objectAtIndex:0];
+            NSString *deviceModel = [AndroidTools getModelNumberForDevice:deviceId];
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:deviceModel
                                                           action:@selector(menuItemClicked:)
                                                    keyEquivalent:@""];
             [item setTarget:self];
-            [item setSubmenu:[self getSubmenuForDeviceId:deviceName]];
+            [item setSubmenu:[self getSubmenuForDeviceId:deviceId]];
             [statusMenu addItem:item];
         }
     }
