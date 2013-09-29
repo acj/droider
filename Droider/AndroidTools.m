@@ -18,14 +18,7 @@
     
     NSString *outputText = [self getOutputFromShellCommand:path withArguments:args];
     
-    NSArray *deviceList = [self removePreambleAndWhitespace:outputText];
-    
-    NSMutableArray *devices = [[NSMutableArray alloc] initWithCapacity:5];
-    for (int i=0; i < deviceList.count; i++) {
-        [devices addObject:[deviceList[i] componentsSeparatedByString:@"\t"]];
-    }
-    
-    return devices;
+    return [self getDeviceListFromAdb:outputText];
 }
 
 + (NSString *) getOutputFromShellCommand:(NSString *)commandPath withArguments:(NSArray *)args
@@ -45,15 +38,25 @@
     return [[NSString alloc] initWithData:taskOutput encoding:NSUTF8StringEncoding];
 }
 
-+ (NSArray*) removePreambleAndWhitespace:(NSString*)adbOutput
++ (NSArray *) getDeviceListFromAdb:(NSString *)adbOutput
 {
-    NSArray *lines = [adbOutput componentsSeparatedByString:@"\n"];
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^([A-Za-z0-9_-]+)\t(.+)"
+                                                                           options:NSRegularExpressionAnchorsMatchLines
+                                                                             error:&error];
     
-    NSRange arrayRange;
-    arrayRange.location = 1;
-    arrayRange.length = lines.count - arrayRange.location - 2;
+    NSArray *matches = [regex matchesInString:adbOutput
+                                      options:0
+                                        range:NSMakeRange(0, [adbOutput length])];
     
-    return [[NSArray alloc] initWithArray:[lines subarrayWithRange:arrayRange]];
+    NSMutableArray *devices = [[NSMutableArray alloc] initWithCapacity:5];
+    for (NSTextCheckingResult *match in matches) {
+        NSString *deviceId = [adbOutput substringWithRange:[match rangeAtIndex:1]];
+        NSString *deviceType = [adbOutput substringWithRange:[match rangeAtIndex:2]];
+        [devices addObject:[NSArray arrayWithObjects:deviceId, deviceType, nil]];
+    }
+    
+    return devices;
 }
 
 @end
