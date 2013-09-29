@@ -50,7 +50,8 @@
                                         range:NSMakeRange(0, [adbOutput length])];
     
     NSMutableArray *devices = [[NSMutableArray alloc] initWithCapacity:5];
-    for (NSTextCheckingResult *match in matches) {
+    for (NSTextCheckingResult *match in matches)
+    {
         NSString *deviceId = [adbOutput substringWithRange:[match rangeAtIndex:1]];
         NSString *deviceType = [adbOutput substringWithRange:[match rangeAtIndex:2]];
         [devices addObject:[NSArray arrayWithObjects:deviceId, deviceType, nil]];
