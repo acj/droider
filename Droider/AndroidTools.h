@@ -13,5 +13,6 @@
 
 + (NSArray*) getListOfConnectedDevices;
 
++ (NSString *) getModelNumberForDevice:(NSString *)deviceId;
 
 @end

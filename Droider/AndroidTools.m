@@ -60,4 +60,33 @@
     return devices;
 }
 
++ (NSString *) getModelNumberForDevice:(NSString *)deviceId
+{
+    NSString *path = @"/Users/acj/android-sdk-macosx/platform-tools/adb";
+    NSString *args = [NSString stringWithFormat:@"-s %@ shell cat /system/build.prop | grep product.model", deviceId];
+    NSArray *argArray = [args componentsSeparatedByString:@" "];
+    
+    NSString *outputText = [self getOutputFromShellCommand:path withArguments:argArray];
+    
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^.+=(.+)"
+                                                                           options:NSRegularExpressionAnchorsMatchLines
+                                                                             error:&error];
+    
+    NSArray *matches = [regex matchesInString:outputText
+                                      options:0
+                                        range:NSMakeRange(0, [outputText length])];
+    
+    NSString *modelNumber;
+    if ([matches count] == 0)
+    {
+        modelNumber = @"";
+    } else {
+        NSTextCheckingResult *match = matches[0];
+        modelNumber = [outputText substringWithRange:[match rangeAtIndex:1]];
+    }
+    
+    return modelNumber;
+}
+
 @end
