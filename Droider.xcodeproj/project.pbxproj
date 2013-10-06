@@ -18,6 +18,7 @@
 		649F59FE17F3D9230094B6CC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 649F59FC17F3D9230094B6CC /* InfoPlist.strings */; };
 		649F5A0117F3D9230094B6CC /* DroiderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 649F5A0017F3D9230094B6CC /* DroiderTests.m */; };
 		649F5A0C17F5008F0094B6CC /* AndroidTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 649F5A0B17F5008F0094B6CC /* AndroidTools.m */; };
+		64ACC1961801FE2400ED55CA /* ShellTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 64ACC1951801FE2400ED55CA /* ShellTools.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,8 @@
 		649F5A0017F3D9230094B6CC /* DroiderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DroiderTests.m; sourceTree = "<group>"; };
 		649F5A0A17F5008F0094B6CC /* AndroidTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AndroidTools.h; sourceTree = "<group>"; };
 		649F5A0B17F5008F0094B6CC /* AndroidTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AndroidTools.m; sourceTree = "<group>"; };
+		64ACC1941801FE2400ED55CA /* ShellTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShellTools.h; sourceTree = "<group>"; };
+		64ACC1951801FE2400ED55CA /* ShellTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShellTools.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +126,8 @@
 				649F59E917F3D9230094B6CC /* AppDelegate.m */,
 				649F59EB17F3D9230094B6CC /* MainMenu.xib */,
 				649F59DD17F3D9220094B6CC /* Supporting Files */,
+				64ACC1941801FE2400ED55CA /* ShellTools.h */,
+				64ACC1951801FE2400ED55CA /* ShellTools.m */,
 			);
 			path = Droider;
 			sourceTree = "<group>";
@@ -266,6 +271,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64ACC1961801FE2400ED55CA /* ShellTools.m in Sources */,
 				649F59E317F3D9220094B6CC /* main.m in Sources */,
 				649F59EA17F3D9230094B6CC /* AppDelegate.m in Sources */,
 				649F5A0C17F5008F0094B6CC /* AndroidTools.m in Sources */,
