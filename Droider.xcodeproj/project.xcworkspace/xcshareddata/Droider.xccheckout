@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>5A74A3CB-C82D-40E7-A762-44A6753BA7EA</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Droider</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9AB7824B-2FD1-4BCE-9753-A473D87625DE</key>
+		<string>https://github.com/acj/droider.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Droider.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9AB7824B-2FD1-4BCE-9753-A473D87625DE</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/acj/droider.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9AB7824B-2FD1-4BCE-9753-A473D87625DE</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9AB7824B-2FD1-4BCE-9753-A473D87625DE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>droider</string>
+		</dict>
+	</array>
+</dict>
+</plist>
