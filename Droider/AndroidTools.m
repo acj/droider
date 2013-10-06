@@ -7,33 +7,23 @@
 //
 
 #import "AndroidTools.h"
+#import "ShellTools.h"
 
 @implementation AndroidTools
 
-+ (NSString *) getOutputFromShellCommand:(NSString *)commandPath withArguments:(NSArray *)args
++ (NSString *) getPathToAdbBinary
 {
-    NSTask *t = [[NSTask alloc] init];
-    NSPipe *outputPipe = [NSPipe pipe];
-    [t setStandardInput:[NSPipe pipe]];
-    [t setStandardOutput:outputPipe];
-    [t setStandardError:outputPipe];
-    [t setLaunchPath:commandPath];
-    [t setArguments:args];
-    [t launch];
-    [t waitUntilExit];
-    
-    NSFileHandle *handle = [outputPipe fileHandleForReading];
-    NSData *taskOutput = [handle readDataToEndOfFile];
-    return [[NSString alloc] initWithData:taskOutput encoding:NSUTF8StringEncoding];
+    return [[ShellTools getOutputFromShellCommand:@"which adb"]
+            stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 + (NSArray*) getListOfConnectedDevices
 {
-    NSString *path = @"/Users/acj/android-sdk-macosx/platform-tools/adb";
+    NSString *path = [self getPathToAdbBinary];
     NSString *devicesArg = @"devices";
     NSArray *args = [NSArray arrayWithObjects:devicesArg, nil];
     
-    NSString *outputText = [self getOutputFromShellCommand:path withArguments:args];
+    NSString *outputText = [ShellTools getOutputFromCommand:path withArguments:args];
     
     return [self getDeviceListFromAdb:outputText];
 }
@@ -62,11 +52,11 @@
 
 + (NSString *) getModelNumberForDevice:(NSString *)deviceId
 {
-    NSString *path = @"/Users/acj/android-sdk-macosx/platform-tools/adb";
+    NSString *path = [self getPathToAdbBinary];
     NSString *args = [NSString stringWithFormat:@"-s %@ shell cat /system/build.prop | grep product.model", deviceId];
     NSArray *argArray = [args componentsSeparatedByString:@" "];
     
-    NSString *outputText = [self getOutputFromShellCommand:path withArguments:argArray];
+    NSString *outputText = [ShellTools getOutputFromCommand:path withArguments:argArray];
     
     NSError *error = NULL;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^.+=(.+)"
