@@ -9,5 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface ShellTools : NSObject
++ (BOOL) userShellIsValid;
+
++ (NSString *) getPathToUserShell;
+
 
 @end
