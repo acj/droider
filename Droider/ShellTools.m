@@ -30,6 +30,40 @@
     return isValidShell;
 }
 
++ (NSString *) getOutputFromShellCommand:(NSString *)command
+{
+    if ([self userShellIsValid])
+    {
+        NSMutableArray *combinedArgs = [NSMutableArray arrayWithObjects:@"-l", @"-c", command, nil];
+        return [self getOutputFromCommand:[self getPathToUserShell] withArguments:combinedArgs];
+    }
+    else
+    {
+        NSLog(@"User shell is not listed in /etc/shells; refusing to run command");
+        return nil;
+    }
+    
+}
+
++ (NSString *) getOutputFromCommand:(NSString *)commandPath withArguments:(NSArray *)args
+{
+    NSLog(@"Launch path will be '%@'", commandPath);
+    NSLog(@"Arguments: %@", args);
+    NSPipe *outputPipe = [NSPipe pipe];
+    NSTask *t = [[NSTask alloc] init];
+    [t setStandardInput:[NSPipe pipe]];
+    [t setStandardOutput:outputPipe];
+    [t setStandardError:outputPipe];
+    [t setLaunchPath:commandPath];
+    [t setArguments:args];
+    [t launch];
+    [t waitUntilExit];
+    
+    NSFileHandle *handle = [outputPipe fileHandleForReading];
+    NSData *taskOutput = [handle readDataToEndOfFile];
+    return [[NSString alloc] initWithData:taskOutput encoding:NSUTF8StringEncoding];
+}
+
 + (NSString *) getPathToUserShell
 {
     NSDictionary *environmentDict = [[NSProcessInfo processInfo] environment];

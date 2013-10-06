@@ -13,5 +13,8 @@
 
 + (NSString *) getPathToUserShell;
 
++ (NSString *) getOutputFromShellCommand:(NSString *)command;
+
++ (NSString *) getOutputFromCommand:(NSString *)commandPath withArguments:(NSArray *)args;
 
 @end
