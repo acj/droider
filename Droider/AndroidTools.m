@@ -79,4 +79,30 @@
     return modelNumber;
 }
 
++ (NSArray *) getListOfRunningProcessesForDevice:(NSString *)deviceId
+{
+    NSString *path       = [self getPathToAdbBinary];
+    NSString *args       = [NSString stringWithFormat:@"-s %@ shell ps", deviceId];
+    NSArray  *argArray   = [args componentsSeparatedByString:@" "];
+    
+    NSString *outputText = [ShellTools getOutputFromCommand:path withArguments:argArray];
+    
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@" ([^ ]+\\.[^ ]+)$"
+                                                                           options:NSRegularExpressionAnchorsMatchLines
+                                                                             error:&error];
+    
+    NSArray *matches = [regex matchesInString:outputText
+                                      options:0
+                                        range:NSMakeRange(0, [outputText length])];
+    
+    NSMutableArray *processList = [[NSMutableArray alloc] init];
+    for (int i=0; i<[matches count]; i++)
+    {
+        [processList addObject:[outputText substringWithRange:[matches[i] rangeAtIndex:1]]];
+    }
+    
+    return processList;
+}
+
 @end

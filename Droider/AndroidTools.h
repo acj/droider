@@ -15,4 +15,6 @@
 
 + (NSString *) getModelNumberForDevice:(NSString *)deviceId;
 
++ (NSArray *) getListOfRunningProcessesForDevice:(NSString *)deviceId;
+
 @end
