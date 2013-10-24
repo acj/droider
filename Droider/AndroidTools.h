@@ -17,4 +17,6 @@
 
 + (NSArray *) getListOfRunningProcessesForDevice:(NSString *)deviceId;
 
++ (NSArray *) getListOfInstalledPackagesForDevice:(NSString *)deviceId;
+
 @end

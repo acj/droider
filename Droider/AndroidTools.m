@@ -105,4 +105,30 @@
     return processList;
 }
 
++ (NSArray *) getListOfInstalledPackagesForDevice:(NSString *)deviceId
+{
+    NSString *path       = [self getPathToAdbBinary];
+    NSString *args       = [NSString stringWithFormat:@"-s %@ shell pm list packages", deviceId];
+    NSArray  *argArray   = [args componentsSeparatedByString:@" "];
+    
+    NSString *outputText = [ShellTools getOutputFromCommand:path withArguments:argArray];
+    
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"package:(.+)$"
+                                                                           options:NSRegularExpressionAnchorsMatchLines
+                                                                             error:&error];
+    
+    NSArray *matches = [regex matchesInString:outputText
+                                      options:0
+                                        range:NSMakeRange(0, [outputText length])];
+    
+    NSMutableArray *packageList = [[NSMutableArray alloc] init];
+    for (int i=0; i<[matches count]; i++)
+    {
+        [packageList addObject:[outputText substringWithRange:[matches[i] rangeAtIndex:1]]];
+    }
+    
+    return packageList;
+}
+
 @end
