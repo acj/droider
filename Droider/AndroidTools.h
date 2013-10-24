@@ -19,4 +19,8 @@
 
 + (NSArray *) getListOfInstalledPackagesForDevice:(NSString *)deviceId;
 
++ (NSArray *) parseOutputOfAdbCommand:(NSString *)command
+                           withDevice:(NSString *)deviceId
+                            withRegex:(NSString *)regexMatch;
+
 @end
