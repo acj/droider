@@ -70,4 +70,15 @@
     return [environmentDict objectForKey:@"SHELL"];
 }
 
++ (int) runCommand:(NSString *)commandPath withArguments:(NSArray *)args
+{
+    NSTask *t = [[NSTask alloc] init];
+    [t setLaunchPath:commandPath];
+    [t setArguments:args];
+    [t launch];
+    [t waitUntilExit];
+    
+    return [t terminationStatus];
+}
+
 @end

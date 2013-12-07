@@ -17,4 +17,6 @@
 
 + (NSString *) getOutputFromCommand:(NSString *)commandPath withArguments:(NSArray *)args;
 
++ (int) runCommand:(NSString *)commandPath withArguments:(NSArray *)args;
+
 @end
