@@ -50,13 +50,18 @@
 {
     NSMenu *submenu = [NSMenu alloc];
     [submenu addItemWithTitle:@"Clear Data" action:nil keyEquivalent:@""];
-    [submenu addItemWithTitle:@"Reboot" action:nil keyEquivalent:@""];
     [submenu addItemWithTitle:@"Take Screenshot" action:nil keyEquivalent:@""];
+    [[submenu addItemWithTitle:@"Reboot" action:@selector(rebootMenuItemClicked:) keyEquivalent:@"R"] setRepresentedObject:deviceId];
     return submenu;
 }
 
 - (void)menuItemClicked:(NSMenuItem *)item
 {
+}
+
+- (void)rebootMenuItemClicked:(NSMenuItem *)item
+{
+    [AndroidTools runAdbCommand:@"reboot" withDevice:[item representedObject]];
 }
 
 @end
