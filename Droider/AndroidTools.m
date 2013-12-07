@@ -79,6 +79,15 @@
     return modelNumber;
 }
 
++ (int) runAdbCommand:(NSString *)command
+           withDevice:(NSString *)deviceId
+{
+    NSString *args       = [NSString stringWithFormat:@"-s %@ %@", deviceId, command];
+    NSArray  *argArray   = [args componentsSeparatedByString:@" "];
+    
+    return [ShellTools runCommand:[self getPathToAdbBinary] withArguments:argArray];
+}
+
 + (NSArray *) parseOutputOfAdbCommand:(NSString *)command
                         withDevice:(NSString *)deviceId
                          withRegex:(NSString *)regexMatch
