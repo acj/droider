@@ -6,8 +6,18 @@
 //  Copyright (c) 2013 Adam Jensen. All rights reserved.
 //
 
-#import "RefeshDeviceListOperation.h"
+#import "AppDelegate.h"
+#import "AndroidTools.h"
+#import "RefreshDeviceListOperation.h"
 
-@implementation RefeshDeviceListOperation
+@implementation RefreshDeviceListOperation
+
+- (void)main {
+    NSArray *devices = [AndroidTools getListOfConnectedDevices];
+    
+    [[AppDelegate shared] performSelectorOnMainThread:@selector(deviceListRefreshed:)
+                                           withObject:devices
+                                        waitUntilDone:YES];
+}
 
 @end

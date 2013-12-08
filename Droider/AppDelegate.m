@@ -8,11 +8,32 @@
 
 #import "AppDelegate.h"
 #import "AndroidTools.h"
+#import "RefreshDeviceListOperation.h"
 #import "Util.h"
 
 @implementation AppDelegate
 
 @synthesize statusMenu;
+
+static AppDelegate *shared;
+
+- (id)init
+{
+    if (![super init])
+    {
+        return nil;
+    }
+    
+    queue = [[NSOperationQueue alloc] init];
+    
+    shared = self;
+    return self;
+}
+
++ (id)shared;
+{
+    return shared;
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -20,13 +41,21 @@
     [statusItem setMenu:statusMenu];
     [statusItem setImage:[NSImage imageNamed:@"android-statusbar-icon"]];
     [statusItem setHighlightMode:YES];
+    [statusMenu setMenuChangedMessagesEnabled:YES];
     
     [self updateMenuItems:statusMenu withDevices:[AndroidTools getListOfConnectedDevices]];
+}
+
+- (void)menuWillOpen:(NSMenu *)menu
+{
+    [self refreshDeviceList];
 }
 
 - (void)updateMenuItems:(NSMenu *)menu
             withDevices:(NSArray *)deviceList
 {
+    [menu removeAllItems];
+    
     if ([deviceList count] == 0) {
         NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"No devices connected"
                                                       action:@selector(menuItemClicked:)
@@ -45,6 +74,8 @@
             [statusMenu addItem:item];
         }
     }
+    
+    [menu setDelegate:self];
     
     NSMenuItem *quitItem = [[NSMenuItem alloc] initWithTitle:@"Quit"
                                                       action:@selector(quitItemClicked:)
@@ -118,6 +149,17 @@
 - (void)quitItemClicked:(NSMenuItem *)item
 {
     [NSApp terminate:self];
+}
+
+- (void)refreshDeviceList
+{
+    RefreshDeviceListOperation *op = [[RefreshDeviceListOperation alloc] init];
+    [queue addOperation:op];
+}
+
+- (void)deviceListRefreshed:(NSArray *)deviceList
+{
+    [self updateMenuItems:statusMenu withDevices:deviceList];
 }
 
 @end
