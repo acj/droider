@@ -88,6 +88,15 @@
     return [ShellTools runCommand:[self getPathToAdbBinary] withArguments:argArray];
 }
 
++ (NSData *) getOutputOfAdbCommand:(NSString *)command
+                        withDevice:(NSString *)deviceId
+{
+    NSString *args       = [NSString stringWithFormat:@"-s %@ %@", deviceId, command];
+    NSArray  *argArray   = [args componentsSeparatedByString:@" "];
+    
+    return [ShellTools getRawOutputFromCommand:[self getPathToAdbBinary] withArguments:argArray];
+}
+
 + (NSArray *) parseOutputOfAdbCommand:(NSString *)command
                         withDevice:(NSString *)deviceId
                          withRegex:(NSString *)regexMatch

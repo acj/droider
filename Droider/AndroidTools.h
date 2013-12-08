@@ -22,6 +22,9 @@
 + (int) runAdbCommand:(NSString *)command
            withDevice:(NSString *)deviceId;
 
++ (NSData *) getOutputOfAdbCommand:(NSString *)command
+                        withDevice:(NSString *)deviceId;
+
 + (NSArray *) parseOutputOfAdbCommand:(NSString *)command
                            withDevice:(NSString *)deviceId
                             withRegex:(NSString *)regexMatch;
