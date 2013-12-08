@@ -50,7 +50,7 @@
 - (NSMenu *)getSubmenuForDeviceId:(NSString *)deviceId
 {
     NSMenu *submenu = [NSMenu alloc];
-    [submenu addItemWithTitle:@"Clear Data" action:nil keyEquivalent:@""];
+    [[submenu addItemWithTitle:@"Clear Data" action:nil keyEquivalent:@"C"] setRepresentedObject:deviceId];
     [[submenu addItemWithTitle:@"Reboot" action:@selector(rebootMenuItemClicked:) keyEquivalent:@"R"] setRepresentedObject:deviceId];
     [[submenu addItemWithTitle:@"Take Screenshot" action:@selector(takeScreenshotMenuItemClicked:) keyEquivalent:@"S"] setRepresentedObject:deviceId];
     return submenu;
