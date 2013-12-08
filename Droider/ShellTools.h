@@ -15,6 +15,8 @@
 
 + (NSString *) getOutputFromShellCommand:(NSString *)command;
 
++ (NSData *) getRawOutputFromCommand:(NSString *)commandPath withArguments:(NSArray *)args;
+
 + (NSString *) getOutputFromCommand:(NSString *)commandPath withArguments:(NSArray *)args;
 
 + (int) runCommand:(NSString *)commandPath withArguments:(NSArray *)args;

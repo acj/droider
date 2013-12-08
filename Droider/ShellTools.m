@@ -45,7 +45,7 @@
     
 }
 
-+ (NSString *) getOutputFromCommand:(NSString *)commandPath withArguments:(NSArray *)args
++ (NSData *) getRawOutputFromCommand:(NSString *)commandPath withArguments:(NSArray *)args
 {
     NSLog(@"Launch path will be '%@'", commandPath);
     NSLog(@"Arguments: %@", args);
@@ -60,8 +60,13 @@
     [t waitUntilExit];
     
     NSFileHandle *handle = [outputPipe fileHandleForReading];
-    NSData *taskOutput = [handle readDataToEndOfFile];
-    return [[NSString alloc] initWithData:taskOutput encoding:NSUTF8StringEncoding];
+    return [handle readDataToEndOfFile];
+}
+
++ (NSString *) getOutputFromCommand:(NSString *)commandPath withArguments:(NSArray *)args
+{
+    return [[NSString alloc] initWithData:[self getRawOutputFromCommand:commandPath withArguments:args]
+                                 encoding:NSUTF8StringEncoding];
 }
 
 + (NSString *) getPathToUserShell
