@@ -45,6 +45,11 @@
             [statusMenu addItem:item];
         }
     }
+    
+    NSMenuItem *quitItem = [[NSMenuItem alloc] initWithTitle:@"Quit"
+                                                      action:@selector(quitItemClicked:)
+                                               keyEquivalent:@"Q"];
+    [statusMenu addItem:quitItem];
 }
 
 - (NSMenu *)getSubmenuForDeviceId:(NSString *)deviceId
@@ -108,6 +113,11 @@
 - (void)rebootMenuItemClicked:(NSMenuItem *)item
 {
     [AndroidTools runAdbCommand:@"reboot" withDevice:[item representedObject]];
+}
+
+- (void)quitItemClicked:(NSMenuItem *)item
+{
+    [NSApp terminate:self];
 }
 
 @end
