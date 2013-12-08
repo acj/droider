@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "AndroidTools.h"
+#import "Util.h"
 
 @implementation AppDelegate
 
@@ -37,7 +38,7 @@
             NSString *deviceId = [device objectAtIndex:0];
             NSString *deviceModel = [AndroidTools getModelNumberForDevice:deviceId];
             NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:deviceModel
-                                                          action:@selector(menuItemClicked:)
+                                                          action:nil
                                                    keyEquivalent:@""];
             [item setTarget:self];
             [item setSubmenu:[self getSubmenuForDeviceId:deviceId]];
@@ -50,13 +51,25 @@
 {
     NSMenu *submenu = [NSMenu alloc];
     [submenu addItemWithTitle:@"Clear Data" action:nil keyEquivalent:@""];
-    [submenu addItemWithTitle:@"Take Screenshot" action:nil keyEquivalent:@""];
     [[submenu addItemWithTitle:@"Reboot" action:@selector(rebootMenuItemClicked:) keyEquivalent:@"R"] setRepresentedObject:deviceId];
+    [[submenu addItemWithTitle:@"Take Screenshot" action:@selector(takeScreenshotMenuItemClicked:) keyEquivalent:@"S"] setRepresentedObject:deviceId];
     return submenu;
 }
 
-- (void)menuItemClicked:(NSMenuItem *)item
+- (void)takeScreenshotMenuItemClicked:(NSMenuItem *)item
 {
+    NSString *localImagePath = [[Util getTemporaryDirectory] stringByAppendingPathComponent:@".droider.jpg"];
+    NSString *sdCardImagePath = @"/sdcard/.droider.jpg";
+    
+    NSString *screenCapCmd = [NSString stringWithFormat:@"shell screencap -p %@", sdCardImagePath];
+    NSString *pullImageCmd = [NSString stringWithFormat:@"pull %@ %@", sdCardImagePath, localImagePath];
+    NSString *removeImageCmd = [NSString stringWithFormat:@"shell rm %@", sdCardImagePath];
+    
+    [AndroidTools runAdbCommand:screenCapCmd withDevice:[item representedObject]];
+    [AndroidTools runAdbCommand:pullImageCmd withDevice:[item representedObject]];
+    [AndroidTools runAdbCommand:removeImageCmd withDevice:[item representedObject]];
+    
+    [[NSWorkspace sharedWorkspace] openFile:localImagePath];
 }
 
 - (void)rebootMenuItemClicked:(NSMenuItem *)item
