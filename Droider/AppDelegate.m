@@ -50,10 +50,43 @@
 - (NSMenu *)getSubmenuForDeviceId:(NSString *)deviceId
 {
     NSMenu *submenu = [NSMenu alloc];
-    [[submenu addItemWithTitle:@"Clear Data" action:nil keyEquivalent:@"C"] setRepresentedObject:deviceId];
+    
+    NSMenuItem *clearDataMenu = [[NSMenuItem alloc] initWithTitle:@"Clear Data"
+                                                           action:nil
+                                                    keyEquivalent:@"C"];
+    [clearDataMenu setRepresentedObject:deviceId];
+    [clearDataMenu setSubmenu:[self getSubmenuWithInstalledPackages:deviceId]];
+    
+    [submenu addItem:clearDataMenu];
+    
     [[submenu addItemWithTitle:@"Reboot" action:@selector(rebootMenuItemClicked:) keyEquivalent:@"R"] setRepresentedObject:deviceId];
     [[submenu addItemWithTitle:@"Take Screenshot" action:@selector(takeScreenshotMenuItemClicked:) keyEquivalent:@"S"] setRepresentedObject:deviceId];
     return submenu;
+}
+
+- (NSMenu *)getSubmenuWithInstalledPackages:(NSString *)deviceId
+{
+    NSMenu *submenu = [NSMenu alloc];
+    
+    NSArray *packageList = [[AndroidTools getListOfInstalledPackagesForDevice:deviceId] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    for (NSString *pkgName in packageList)
+    {
+        [[submenu addItemWithTitle:pkgName
+                            action:@selector(clearDataMenuItemClicked:)
+                     keyEquivalent:@""] setRepresentedObject:pkgName];
+    }
+    
+    return submenu;
+}
+
+- (void)clearDataMenuItemClicked:(NSMenuItem *)item
+{
+    NSString *deviceId = [[item parentItem] representedObject];
+    NSString *pkgName  = [item representedObject];
+    NSString *clearCmd = [NSString stringWithFormat:@"shell pm clear %@", pkgName];
+    
+    [AndroidTools runAdbCommand:clearCmd withDevice:deviceId];
 }
 
 - (void)takeScreenshotMenuItemClicked:(NSMenuItem *)item
