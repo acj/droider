@@ -18,7 +18,7 @@
 {
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     [statusItem setMenu:statusMenu];
-    [statusItem setTitle:@"Devices"];
+    [statusItem setImage:[NSImage imageNamed:@"android-statusbar-icon"]];
     [statusItem setHighlightMode:YES];
     
     [self updateMenuItems:statusMenu withDevices:[AndroidTools getListOfConnectedDevices]];
