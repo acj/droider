@@ -25,13 +25,16 @@
     
     NSString *outputText = [ShellTools getOutputFromCommand:path withArguments:args];
     
-    return [self getDeviceListFromAdb:outputText];
+    NSMutableArray *devices = (NSMutableArray *)[self getDeviceListFromAdb:outputText withRegex:@"^([A-Za-z0-9_-]+)\t(.+)"];
+    [devices addObjectsFromArray:[self getDeviceListFromAdb:outputText withRegex:@"^([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+:[0-9]+)\t(.+)"]];
+    return devices;
 }
 
 + (NSArray *) getDeviceListFromAdb:(NSString *)adbOutput
+                         withRegex:(NSString *)regexString
 {
     NSError *error = NULL;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^([A-Za-z0-9_-]+)\t(.+)"
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString
                                                                            options:NSRegularExpressionAnchorsMatchLines
                                                                              error:&error];
     
@@ -53,13 +56,27 @@
 + (NSString *) getModelNumberForDevice:(NSString *)deviceId
 {
     NSString *path = [self getPathToAdbBinary];
-    NSString *args = [NSString stringWithFormat:@"-s %@ shell cat /system/build.prop | grep product.model", deviceId];
+    NSString *args = [NSString stringWithFormat:@"-s %@ shell cat /system/build.prop", deviceId];
     NSArray *argArray = [args componentsSeparatedByString:@" "];
     
     NSString *outputText = [ShellTools getOutputFromCommand:path withArguments:argArray];
     
+    for (NSString *s in [NSArray arrayWithObjects:@"product.model", @"product.device", @"product.name", @"product.brand", nil])
+    {
+        NSString *productModel = [self getBuildPropertyFrom:outputText matchingRegex:s];
+        if ( [productModel length] > 0 )
+        {
+            return productModel;
+        }
+    }
+    
+    return deviceId;
+}
+
++ (NSString *) getBuildPropertyFrom:(NSString *)outputText matchingRegex:(NSString *)matchRegex
+{
     NSError *error = NULL;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^.+=(.+)"
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"^.+%@=(.+)", matchRegex]
                                                                            options:NSRegularExpressionAnchorsMatchLines
                                                                              error:&error];
     
@@ -67,16 +84,16 @@
                                       options:0
                                         range:NSMakeRange(0, [outputText length])];
     
-    NSString *modelNumber;
+    NSString *matchingPropertyString;
     if ([matches count] == 0)
     {
-        modelNumber = @"";
+        matchingPropertyString = @"";
     } else {
         NSTextCheckingResult *match = matches[0];
-        modelNumber = [outputText substringWithRange:[match rangeAtIndex:1]];
+        matchingPropertyString = [outputText substringWithRange:[match rangeAtIndex:1]];
     }
     
-    return modelNumber;
+    return matchingPropertyString;
 }
 
 + (int) runAdbCommand:(NSString *)command
