@@ -12,7 +12,8 @@
 
 @implementation RefreshDeviceListOperation
 
-- (void)main {
+- (void)main
+{
     NSArray *devices = [AndroidTools getListOfConnectedDevices];
     
     [[AppDelegate shared] performSelectorOnMainThread:@selector(deviceListRefreshed:)

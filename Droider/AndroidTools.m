@@ -17,7 +17,7 @@
             stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-+ (NSArray*) getListOfConnectedDevices
++ (NSArray *) getListOfConnectedDevices
 {
     NSString *path = [self getPathToAdbBinary];
     NSString *devicesArg = @"devices";
