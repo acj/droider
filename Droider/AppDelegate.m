@@ -8,12 +8,15 @@
 
 #import "AppDelegate.h"
 #import "AndroidTools.h"
+#import "Device.h"
+#import "GetDeviceInfoOperation.h"
 #import "RefreshDeviceListOperation.h"
 #import "Util.h"
 
 @implementation AppDelegate
 
 @synthesize statusMenu;
+@synthesize devices;
 
 static AppDelegate *shared;
 
@@ -24,6 +27,7 @@ static AppDelegate *shared;
         return nil;
     }
     
+    devices = [[NSMutableDictionary alloc] init];
     queue = [[NSOperationQueue alloc] init];
     
     shared = self;
@@ -41,9 +45,11 @@ static AppDelegate *shared;
     [statusItem setMenu:statusMenu];
     [statusItem setImage:[NSImage imageNamed:@"android-statusbar-icon"]];
     [statusItem setHighlightMode:YES];
-    [statusMenu setMenuChangedMessagesEnabled:YES];
     
-    [self updateMenuItems:statusMenu withDevices:[AndroidTools getListOfConnectedDevices]];
+    [statusMenu setMenuChangedMessagesEnabled:YES];
+    [statusMenu setDelegate:self];
+    
+    [self refreshDeviceList];
 }
 
 - (void)menuWillOpen:(NSMenu *)menu
@@ -51,31 +57,35 @@ static AppDelegate *shared;
     [self refreshDeviceList];
 }
 
+- (void)showEmptyDeviceList:(NSMenu *)menu
+{
+    [statusMenu removeAllItems];
+    
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"No devices connected"
+                                                  action:nil
+                                           keyEquivalent:@""];
+    [menu addItem:item];
+}
+
 - (void)updateMenuItems:(NSMenu *)menu
-            withDevices:(NSArray *)deviceList
+            withDevices:(NSMutableDictionary *)deviceList
 {
     [menu removeAllItems];
     
     if ([deviceList count] == 0) {
-        NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:@"No devices connected"
-                                                      action:@selector(menuItemClicked:)
-                                               keyEquivalent:@""];
-        [statusMenu addItem:item];
+        [self showEmptyDeviceList:menu];
     } else {
-        for (NSArray *device in deviceList)
+        for (NSString *deviceId in deviceList)
         {
-            NSString *deviceId = [device objectAtIndex:0];
-            NSString *deviceModel = [AndroidTools getModelNumberForDevice:deviceId];
-            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:deviceModel
+            Device *device = [deviceList objectForKey:deviceId];
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:[device deviceModel]
                                                           action:nil
                                                    keyEquivalent:@""];
             [item setTarget:self];
-            [item setSubmenu:[self getSubmenuForDeviceId:deviceId]];
-            [statusMenu addItem:item];
+            [item setSubmenu:[self getSubmenuForDevice:device]];
+            [menu addItem:item];
         }
     }
-    
-    [menu setDelegate:self];
     
     NSMenuItem *quitItem = [[NSMenuItem alloc] initWithTitle:@"Quit"
                                                       action:@selector(quitItemClicked:)
@@ -83,30 +93,28 @@ static AppDelegate *shared;
     [statusMenu addItem:quitItem];
 }
 
-- (NSMenu *)getSubmenuForDeviceId:(NSString *)deviceId
+- (NSMenu *)getSubmenuForDevice:(Device *)device
 {
     NSMenu *submenu = [NSMenu alloc];
     
     NSMenuItem *clearDataMenu = [[NSMenuItem alloc] initWithTitle:@"Clear Data"
                                                            action:nil
                                                     keyEquivalent:@"C"];
-    [clearDataMenu setRepresentedObject:deviceId];
-    [clearDataMenu setSubmenu:[self getSubmenuWithInstalledPackages:deviceId]];
+    [clearDataMenu setRepresentedObject:device];
+    [clearDataMenu setSubmenu:[self getSubmenuWithInstalledPackages:device]];
     
     [submenu addItem:clearDataMenu];
     
-    [[submenu addItemWithTitle:@"Reboot" action:@selector(rebootMenuItemClicked:) keyEquivalent:@"R"] setRepresentedObject:deviceId];
-    [[submenu addItemWithTitle:@"Take Screenshot" action:@selector(takeScreenshotMenuItemClicked:) keyEquivalent:@"S"] setRepresentedObject:deviceId];
+    [[submenu addItemWithTitle:@"Reboot" action:@selector(rebootMenuItemClicked:) keyEquivalent:@"R"] setRepresentedObject:[device deviceId]];
+    [[submenu addItemWithTitle:@"Take Screenshot" action:@selector(takeScreenshotMenuItemClicked:) keyEquivalent:@"S"] setRepresentedObject:[device deviceId]];
     return submenu;
 }
 
-- (NSMenu *)getSubmenuWithInstalledPackages:(NSString *)deviceId
+- (NSMenu *)getSubmenuWithInstalledPackages:(Device *)device
 {
     NSMenu *submenu = [NSMenu alloc];
     
-    NSArray *packageList = [[AndroidTools getListOfInstalledPackagesForDevice:deviceId] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    
-    for (NSString *pkgName in packageList)
+    for (NSString *pkgName in [device installedPackages])
     {
         [[submenu addItemWithTitle:pkgName
                             action:@selector(clearDataMenuItemClicked:)
@@ -153,13 +161,30 @@ static AppDelegate *shared;
 
 - (void)refreshDeviceList
 {
-    RefreshDeviceListOperation *op = [[RefreshDeviceListOperation alloc] init];
-    [queue addOperation:op];
+    [queue addOperation:[[RefreshDeviceListOperation alloc] init]];
 }
 
 - (void)deviceListRefreshed:(NSArray *)deviceList
 {
-    [self updateMenuItems:statusMenu withDevices:deviceList];
+    if ([deviceList count] == 0)
+    {
+        [self showEmptyDeviceList:statusMenu];
+    }
+    else
+    {
+        for (NSArray *deviceId in deviceList)
+        {
+            Device *device = [[Device alloc] initWithDeviceId:deviceId];
+            [queue addOperation:[[GetDeviceInfoOperation alloc] initWithDevice:device]];
+        }
+    }
+}
+
+- (void)didRefreshDeviceInfo:(Device *)device
+{
+    [devices setObject:device forKey:[device deviceId]];
+    
+    [self updateMenuItems:statusMenu withDevices:devices];
 }
 
 @end

@@ -10,4 +10,13 @@
 
 @interface Device : NSObject
 
+
+- (id)initWithDeviceId:(NSArray *)deviceId_;
+- (void)refresh;
+
+@property NSString *deviceId;
+@property NSString *deviceType;
+@property NSString *deviceModel;
+@property NSArray  *installedPackages;
+
 @end

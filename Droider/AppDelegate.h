@@ -20,4 +20,6 @@
 + (id)shared;
 @property (strong, nonatomic) IBOutlet NSMenu *statusMenu;
 
+@property (strong, nonatomic) NSMutableDictionary *devices;
+
 @end

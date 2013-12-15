@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		641C22EE185AA92D00F45462 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = 641C22ED185AA92D00F45462 /* Device.m */; };
+		641C22F4185AB59D00F45462 /* GetDeviceInfoOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 641C22F3185AB59D00F45462 /* GetDeviceInfoOperation.m */; };
 		649F59D717F3D9220094B6CC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 649F59D617F3D9220094B6CC /* Cocoa.framework */; };
 		649F59E117F3D9220094B6CC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 649F59DF17F3D9220094B6CC /* InfoPlist.strings */; };
 		649F59E317F3D9220094B6CC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 649F59E217F3D9220094B6CC /* main.m */; };
@@ -35,6 +37,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		641C22EC185AA92D00F45462 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		641C22ED185AA92D00F45462 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
+		641C22F2185AB59D00F45462 /* GetDeviceInfoOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetDeviceInfoOperation.h; sourceTree = "<group>"; };
+		641C22F3185AB59D00F45462 /* GetDeviceInfoOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetDeviceInfoOperation.m; sourceTree = "<group>"; };
 		649F59D317F3D9220094B6CC /* Droider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Droider.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		649F59D617F3D9220094B6CC /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		649F59D917F3D9220094B6CC /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -141,6 +147,10 @@
 				64C479651854185C004C37A6 /* Util.m */,
 				64C4796A18552973004C37A6 /* RefreshDeviceListOperation.h */,
 				64C4796B18552973004C37A6 /* RefreshDeviceListOperation.m */,
+				641C22EC185AA92D00F45462 /* Device.h */,
+				641C22ED185AA92D00F45462 /* Device.m */,
+				641C22F2185AB59D00F45462 /* GetDeviceInfoOperation.h */,
+				641C22F3185AB59D00F45462 /* GetDeviceInfoOperation.m */,
 			);
 			path = Droider;
 			sourceTree = "<group>";
@@ -285,11 +295,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				641C22F4185AB59D00F45462 /* GetDeviceInfoOperation.m in Sources */,
 				64C4796C18552973004C37A6 /* RefreshDeviceListOperation.m in Sources */,
 				64C479661854185C004C37A6 /* Util.m in Sources */,
 				64ACC1961801FE2400ED55CA /* ShellTools.m in Sources */,
 				649F59E317F3D9220094B6CC /* main.m in Sources */,
 				649F59EA17F3D9230094B6CC /* AppDelegate.m in Sources */,
+				641C22EE185AA92D00F45462 /* Device.m in Sources */,
 				649F5A0C17F5008F0094B6CC /* AndroidTools.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
